@@ -64,6 +64,8 @@ func NewDirichlet(alpha []float64, src *rand.Rand) *Dirichlet {
 func (d *Dirichlet) CovarianceMatrix(cov *mat64.SymDense) *mat64.SymDense {
 	if cov == nil {
 		cov = mat64.NewSymDense(d.Dim(), nil)
+	} else if cov.Symmetric() == 0 {
+		*cov = *(cov.GrowSquare(d.dim).(*mat64.SymDense))
 	} else if cov.Symmetric() != d.dim {
 		panic("normal: input matrix size mismatch")
 	}

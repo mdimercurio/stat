@@ -82,6 +82,11 @@ func checkCov(t *testing.T, cas int, x *mat64.Dense, c Cover, tol float64) {
 	if !mat64.Equal(cov, cov2) {
 		t.Errorf("Cov mismatch when providing nil and matrix. Case %v", cas)
 	}
+	var cov3 mat64.SymDense
+	c.CovarianceMatrix(&cov3)
+	if !mat64.Equal(cov, &cov3) {
+		t.Errorf("Cov mismatch when providing zero matrix. Case %v", cas)
+	}
 
 	// Check that the covariance matrix matches the samples
 	covEst := stat.CovarianceMatrix(nil, x, nil)
